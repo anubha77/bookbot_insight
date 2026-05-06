@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookBot Insight</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="container">
+        <header class="header">
+            <h1>BookBot Insight</h1>
+            <p class="subtitle">Ask questions about your book and get instant answers.</p>
+        </header>
+
+        <section id="chat-box" aria-live="polite" aria-label="Chat messages"></section>
+
+        <form class="input-area" id="chat-form" aria-label="Ask BookBot">
+            <input
+                type="text"
+                id="user-input"
+                placeholder="Ask something about the book..."
+                autocomplete="off"
+                aria-label="Message for BookBot"
+                required
+            >
+            <button type="submit" id="send-btn" aria-label="Send message">Send</button>
+        </form>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
