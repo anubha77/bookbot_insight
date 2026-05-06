@@ -9,6 +9,7 @@ const bookTitleInput = document.getElementById("book-title");
 const bookAuthorInput = document.getElementById("book-author");
 const bookFileInput = document.getElementById("book-file");
 const uploadButton = document.getElementById("upload-btn");
+const booksHelp = document.getElementById("books-help");
 
 const API_BASE_URL = "http://127.0.0.1:5000";
 let selectedBookId = "";
@@ -56,9 +57,10 @@ function renderBookOptions(books) {
     if (!books.length) {
         const option = document.createElement("option");
         option.value = "";
-        option.textContent = "No books yet - add one below";
+        option.textContent = "No books uploaded yet";
         bookSelect.appendChild(option);
         selectedBookId = "";
+        booksHelp.textContent = "Upload a PDF/TXT/MD file from above to start chatting.";
         return;
     }
 
@@ -72,6 +74,7 @@ function renderBookOptions(books) {
         }
         bookSelect.appendChild(option);
     });
+    booksHelp.textContent = "Pick a book from the list and ask questions in the chat panel.";
 }
 
 async function loadBooks() {
@@ -84,7 +87,8 @@ async function loadBooks() {
         renderBookOptions(books);
     } catch (error) {
         renderBookOptions([]);
-        appendMessage("Error", "Could not load books from backend.", "error");
+        booksHelp.textContent = "Backend is unreachable. Start Node API and MongoDB, then click Reload Books.";
+        appendMessage("Error", "Could not load books from backend. Make sure Node API is running on http://127.0.0.1:5000.", "error");
     }
 }
 
