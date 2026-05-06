@@ -1,10 +1,12 @@
 import express from "express";
 import multer from "multer";
-import pdf from "pdf-parse";
+import { createRequire } from "module";
 import { Book } from "../models/Book.js";
 import { ingestBookToPythonLLM } from "../services/llmClient.js";
 
 export const bookRouter = express.Router();
+const require = createRequire(import.meta.url);
+const pdf = require("pdf-parse");
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 20 * 1024 * 1024 }
