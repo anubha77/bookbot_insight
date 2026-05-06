@@ -24,7 +24,7 @@ queryRouter.post("/", async (req, res) => {
 
     const llmResponse = await askPythonLLM({
       pythonLlmUrl: process.env.PYTHON_LLM_URL,
-      bookContent: book.content,
+      bookId: book._id,
       query
     });
 

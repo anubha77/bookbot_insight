@@ -3,7 +3,7 @@
 This backend is split into two services:
 
 - `node-api`: API gateway, MongoDB persistence, query logging
-- `python-llm`: LLM answering service (OpenAI-compatible API optional)
+- `python-llm`: LangChain retrieval service (embeddings + vector DB + LLM answering)
 
 ## 1) Run MongoDB
 
@@ -47,6 +47,16 @@ python app.py
 ```
 
 If `OPENAI_API_KEY` is empty, service uses a local fallback matcher.
+
+## LangChain Concepts Applied
+
+- **Embedding model**: Converts text chunks and questions to vectors (`all-MiniLM-L6-v2` by default).
+- **Vector database**: Chroma stores chunk vectors locally for semantic retrieval.
+- **Retrieval flow**:
+  1. Node creates/uploads a book.
+  2. Node calls Python `/ingest` to chunk + embed + index by `book_id`.
+  3. Query calls `/answer` with `book_id` and query.
+  4. Python retrieves top relevant chunks and answers from that context.
 
 ## 4) Frontend integration note
 

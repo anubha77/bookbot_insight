@@ -2,3 +2,8 @@ flask==3.0.3
 flask-cors==4.0.1
 python-dotenv==1.0.1
 requests==2.32.3
+langchain==0.3.27
+langchain-community==0.3.27
+langchain-openai==0.2.14
+langchain-huggingface==0.1.2
+chromadb==0.5.11

@@ -2,12 +2,26 @@ import express from "express";
 import multer from "multer";
 import pdf from "pdf-parse";
 import { Book } from "../models/Book.js";
+import { ingestBookToPythonLLM } from "../services/llmClient.js";
 
 export const bookRouter = express.Router();
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 20 * 1024 * 1024 }
 });
+
+async function tryIngestBook(book) {
+  try {
+    await ingestBookToPythonLLM({
+      pythonLlmUrl: process.env.PYTHON_LLM_URL,
+      bookId: book._id,
+      title: book.title,
+      content: book.content
+    });
+  } catch (error) {
+    console.warn("Vector ingest skipped:", error?.message || "Unknown error");
+  }
+}
 
 bookRouter.post("/", async (req, res) => {
   try {
@@ -17,6 +31,7 @@ bookRouter.post("/", async (req, res) => {
     }
 
     const book = await Book.create({ title, author, content, metadata });
+    await tryIngestBook(book);
     return res.status(201).json(book);
   } catch (error) {
     return res.status(500).json({ error: "Failed to create book." });
@@ -67,6 +82,7 @@ bookRouter.post("/upload", upload.single("bookFile"), async (req, res) => {
         size: req.file.size
       }
     });
+    await tryIngestBook(book);
 
     return res.status(201).json(book);
   } catch (error) {
