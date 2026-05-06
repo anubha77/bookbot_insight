@@ -51,6 +51,59 @@ body {
     font-size: 0.95rem;
 }
 
+.book-setup {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #f9fbff;
+    padding: 12px;
+    display: grid;
+    gap: 10px;
+}
+
+.book-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+}
+
+#book-select,
+#book-title,
+#book-author,
+#book-content {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #c8d1df;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-family: inherit;
+}
+
+#book-content {
+    resize: vertical;
+    min-height: 88px;
+}
+
+.book-form {
+    display: grid;
+    gap: 10px;
+}
+
+#refresh-books-btn,
+#save-book-btn {
+    padding: 10px 14px;
+    border: none;
+    border-radius: 10px;
+    background: #31476f;
+    color: #fff;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+#refresh-books-btn:hover,
+#save-book-btn:hover {
+    background: #263a5d;
+}
+
 #chat-box {
     flex: 1;
     overflow-y: auto;
@@ -171,6 +224,10 @@ body {
     .container {
         height: 95vh;
         padding: 14px;
+    }
+
+    .book-row {
+        grid-template-columns: 1fr;
     }
 
     .message {

@@ -13,6 +13,19 @@
             <p class="subtitle">Ask questions about your book and get instant answers.</p>
         </header>
 
+        <section class="book-setup" aria-label="Book setup">
+            <div class="book-row">
+                <select id="book-select" aria-label="Select a book"></select>
+                <button type="button" id="refresh-books-btn">Refresh</button>
+            </div>
+            <form id="book-form" class="book-form" aria-label="Add a new book">
+                <input type="text" id="book-title" placeholder="Book title" required>
+                <input type="text" id="book-author" placeholder="Author (optional)">
+                <textarea id="book-content" placeholder="Paste book content or chapter text..." rows="4" required></textarea>
+                <button type="submit" id="save-book-btn">Save Book</button>
+            </form>
+        </section>
+
         <section id="chat-box" aria-live="polite" aria-label="Chat messages"></section>
 
         <form class="input-area" id="chat-form" aria-label="Ask BookBot">
