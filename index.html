@@ -7,38 +7,41 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <main class="container">
-        <header class="header">
-            <h1>BookBot Insight</h1>
-            <p class="subtitle">Ask questions about your book and get instant answers.</p>
-        </header>
+    <main class="app-shell">
+        <aside class="left-panel" aria-label="Book panel">
+            <header class="panel-header">
+                <h1>BookBot Insight</h1>
+                <p class="subtitle">Upload your book and ask precise questions.</p>
+            </header>
 
-        <section class="book-setup" aria-label="Book setup">
+            <form id="upload-form" class="upload-form" aria-label="Upload book file">
+                <input type="text" id="book-title" placeholder="Book title (optional)">
+                <input type="text" id="book-author" placeholder="Author (optional)">
+                <input type="file" id="book-file" accept=".pdf,.txt,.md,.text" required>
+                <button type="submit" id="upload-btn">Upload Book File</button>
+            </form>
+
             <div class="book-row">
                 <select id="book-select" aria-label="Select a book"></select>
                 <button type="button" id="refresh-books-btn">Refresh</button>
             </div>
-            <form id="book-form" class="book-form" aria-label="Add a new book">
-                <input type="text" id="book-title" placeholder="Book title" required>
-                <input type="text" id="book-author" placeholder="Author (optional)">
-                <textarea id="book-content" placeholder="Paste book content or chapter text..." rows="4" required></textarea>
-                <button type="submit" id="save-book-btn">Save Book</button>
+        </aside>
+
+        <section class="chat-panel" aria-label="Chat panel">
+            <section id="chat-box" aria-live="polite" aria-label="Chat messages"></section>
+
+            <form class="input-area" id="chat-form" aria-label="Ask BookBot">
+                <input
+                    type="text"
+                    id="user-input"
+                    placeholder="Ask something about your selected book..."
+                    autocomplete="off"
+                    aria-label="Message for BookBot"
+                    required
+                >
+                <button type="submit" id="send-btn" aria-label="Send message">Send</button>
             </form>
         </section>
-
-        <section id="chat-box" aria-live="polite" aria-label="Chat messages"></section>
-
-        <form class="input-area" id="chat-form" aria-label="Ask BookBot">
-            <input
-                type="text"
-                id="user-input"
-                placeholder="Ask something about the book..."
-                autocomplete="off"
-                aria-label="Message for BookBot"
-                required
-            >
-            <button type="submit" id="send-btn" aria-label="Send message">Send</button>
-        </form>
     </main>
 
     <script src="script.js"></script>

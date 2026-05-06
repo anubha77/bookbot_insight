@@ -22,6 +22,7 @@ Node API endpoints:
 
 - `GET /health`
 - `POST /books` -> create a book
+- `POST /books/upload` -> upload `.pdf/.txt/.md` and create a book
 - `GET /books` -> list books
 - `POST /query` -> answer question for a book
 

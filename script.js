@@ -4,11 +4,11 @@ const chatForm = document.getElementById("chat-form");
 const sendButton = document.getElementById("send-btn");
 const bookSelect = document.getElementById("book-select");
 const refreshBooksButton = document.getElementById("refresh-books-btn");
-const bookForm = document.getElementById("book-form");
+const uploadForm = document.getElementById("upload-form");
 const bookTitleInput = document.getElementById("book-title");
 const bookAuthorInput = document.getElementById("book-author");
-const bookContentInput = document.getElementById("book-content");
-const saveBookButton = document.getElementById("save-book-btn");
+const bookFileInput = document.getElementById("book-file");
+const uploadButton = document.getElementById("upload-btn");
 
 const API_BASE_URL = "http://127.0.0.1:5000";
 let selectedBookId = "";
@@ -44,11 +44,11 @@ function setLoading(isLoading) {
 }
 
 function setBookSaving(isSaving) {
-    saveBookButton.disabled = isSaving;
-    saveBookButton.textContent = isSaving ? "Saving..." : "Save Book";
+    uploadButton.disabled = isSaving;
+    uploadButton.textContent = isSaving ? "Uploading..." : "Upload Book File";
     bookTitleInput.disabled = isSaving;
     bookAuthorInput.disabled = isSaving;
-    bookContentInput.disabled = isSaving;
+    bookFileInput.disabled = isSaving;
 }
 
 function renderBookOptions(books) {
@@ -88,21 +88,30 @@ async function loadBooks() {
     }
 }
 
-async function saveBook(event) {
+async function uploadBook(event) {
     event.preventDefault();
     const title = bookTitleInput.value.trim();
     const author = bookAuthorInput.value.trim();
-    const content = bookContentInput.value.trim();
-    if (!title || !content) return;
+    const file = bookFileInput.files?.[0];
+    if (!file) {
+        appendMessage("BookBot", "Please choose a file before uploading.", "error");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("bookFile", file);
+    if (title) {
+        formData.append("title", title);
+    }
+    if (author) {
+        formData.append("author", author);
+    }
 
     setBookSaving(true);
     try {
-        const response = await fetch(`${API_BASE_URL}/books`, {
+        const response = await fetch(`${API_BASE_URL}/books/upload`, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ title, author, content })
+            body: formData
         });
 
         if (!response.ok) {
@@ -112,13 +121,13 @@ async function saveBook(event) {
         const createdBook = await response.json();
         bookTitleInput.value = "";
         bookAuthorInput.value = "";
-        bookContentInput.value = "";
+        bookFileInput.value = "";
         await loadBooks();
         selectedBookId = createdBook._id;
         bookSelect.value = createdBook._id;
-        appendMessage("BookBot", `Book "${createdBook.title}" saved. You can now ask questions.`);
+        appendMessage("BookBot", `Uploaded "${createdBook.title}". You can now ask questions.`);
     } catch (error) {
-        appendMessage("Error", "Failed to save book. Check backend connection.", "error");
+        appendMessage("Error", "Failed to upload book file. Check backend connection.", "error");
     } finally {
         setBookSaving(false);
     }
@@ -165,11 +174,11 @@ chatForm.addEventListener("submit", (event) => {
     sendMessage();
 });
 
-bookForm.addEventListener("submit", saveBook);
+uploadForm.addEventListener("submit", uploadBook);
 refreshBooksButton.addEventListener("click", loadBooks);
 bookSelect.addEventListener("change", () => {
     selectedBookId = bookSelect.value;
 });
 
 loadBooks();
-appendMessage("BookBot", "Hi! Add a book and then ask me anything about it.");
+appendMessage("BookBot", "Hi! Upload a book from the left panel, then ask me anything.");
